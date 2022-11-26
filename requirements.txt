@@ -1,6 +1,5 @@
 Flask
 Flask-Session
 gunicorn
-jsonify
 psycopg2
 requests
