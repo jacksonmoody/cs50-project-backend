@@ -1,8 +1,7 @@
-from flask import Flask, jsonify, request, send_file
+from flask import Flask
 
 app = Flask(__name__)
 
-@app.route('/', method = ['GET'])
-
+@app.route("/")
 def api():
-    return jsonify({"message": "Hello World"})
+    return "Hello, World!"
