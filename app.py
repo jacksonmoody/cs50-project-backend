@@ -23,9 +23,10 @@ def nytapi():
     nyt_result = response
     return nyt_result
 
-@scheduler.task('interval', id='do_job_1', seconds=30, misfire_grace_time=900)
+@scheduler.task('interval', id='do_job_1', seconds=5)
 def timed_job():
     print("im running whoooo")
     nyt_result = nytapi()
+    print(nyt_result)
 
 categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
