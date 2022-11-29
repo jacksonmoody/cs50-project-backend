@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request, send_file
 from flask_apscheduler import APScheduler
-from apscheduler.schedulers.background import BackgroundScheduler
 import requests
 import os.path
 import time
@@ -11,9 +10,14 @@ class Config:
 app = Flask(__name__)
 app.config.from_object(Config())
 
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
+@app.before_first_request
+def init_scheduler():
+    scheduler = APScheduler()
+    scheduler.init_app(app)
+    scheduler.start()
+    scheduler.add_job(id='nytapi', func=nytapi, trigger='interval', seconds=5)
+
+categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
 
 nyt_result = {}
 
@@ -21,12 +25,9 @@ def nytapi():
     response = requests.get("https://api.nytimes.com/svc/mostpopular/v2/viewed/7.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD")
     response = response.json()
     nyt_result = response
-    return nyt_result
 
-@scheduler.task('interval', id='do_job_1', seconds=5)
-def timed_job():
-    print("im running whoooo")
-    nyt_result = nytapi()
-    print(nyt_result)
-
-categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
+@app.route("/")
+def api():
+    return jsonify({
+        "nyt_api": nyt_result
+        })   
