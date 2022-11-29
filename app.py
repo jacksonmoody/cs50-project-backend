@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, send_file
-from apscheduler.schedulers.blocking import BackgroundScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 import requests
 import os.path
 
@@ -20,7 +20,7 @@ def nytapi():
 def timed_job():
     nyt_result = nytapi()
 
-sched.add_job(timed_job, 'interval', minutes=1)
+sched.add_job(timed_job, 'interval', seconds=5)
 
 sched.start()
 
