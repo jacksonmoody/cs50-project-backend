@@ -17,7 +17,7 @@ def nytapi():
     nyt_result = response
     return nyt_result
 
-@sched.scheduled_job('interval', minutes=1)
+@sched.scheduled_job('interval', seconds=1)
 def timed_job():
     nyt_result = nytapi()
 
