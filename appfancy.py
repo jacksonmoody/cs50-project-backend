@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, send_file
+from apscheduler.schedulers.blocking import BlockingScheduler
 import requests
 import os.path
 
@@ -12,10 +13,19 @@ SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"]
 
 app = Flask(__name__)
 
+sched = BlockingScheduler()
+
 categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
 
 youtube_result = {}
 nyt_result = {}
+
+@sched.scheduled_job('interval', minutes=1)
+def timed_job():
+    nyt_result = nytapi()
+    youtube_result = youtubeapi()
+
+sched.start()
 
 def youtubeapi():
     creds = None
