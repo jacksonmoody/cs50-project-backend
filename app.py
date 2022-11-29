@@ -1,11 +1,11 @@
 from flask import Flask, jsonify, request, send_file
-from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.blocking import BackgroundScheduler
 import requests
 import os.path
 
 app = Flask(__name__)
 
-sched = BlockingScheduler()
+sched = BackgroundScheduler(daemon=True)
 
 categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
 
@@ -16,10 +16,11 @@ def nytapi():
     response = response.json()
     nyt_result = response
     return nyt_result
-
-@sched.scheduled_job('interval', seconds=1)
+    
 def timed_job():
     nyt_result = nytapi()
+
+sched.add_job(timed_job, 'interval', minutes=1)
 
 sched.start()
 
