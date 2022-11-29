@@ -6,13 +6,15 @@ app = Flask(__name__)
 
 categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
 
-nyt_result = {}
-
 def nytapi():
     response = requests.get("https://api.nytimes.com/svc/mostpopular/v2/viewed/7.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD")
     response = response.json()
     nyt_result = response
     return nyt_result
+
+nyt_result = {}
+
+nyt_result = nytapi()
 
 @app.route("/")
 def api():
