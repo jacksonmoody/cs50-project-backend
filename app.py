@@ -22,6 +22,7 @@ categories = {'sports', 'politics', 'business', 'entertainment', 'technology', '
 nyt_result = {}
 
 def nytapi():
+    global nyt_result
     response = requests.get("https://api.nytimes.com/svc/mostpopular/v2/viewed/7.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD")
     response = response.json()
     nyt_result = response
