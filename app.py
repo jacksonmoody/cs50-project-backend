@@ -1,13 +1,19 @@
 from flask import Flask, jsonify, request, send_file
+from flask_apscheduler import APScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 import requests
 import os.path
+import time
+
+class Config:
+    SCHEDULER_API_ENABLED = True
 
 app = Flask(__name__)
+app.config.from_object(Config())
 
-sched = BackgroundScheduler(daemon=True)
-
-categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
 
 nyt_result = {}
 
@@ -16,16 +22,10 @@ def nytapi():
     response = response.json()
     nyt_result = response
     return nyt_result
-    
+
+@scheduler.task('interval', id='do_job_1', seconds=30, misfire_grace_time=900)
 def timed_job():
+    print("im running whoooo")
     nyt_result = nytapi()
 
-sched.add_job(timed_job, 'interval', seconds=5)
-
-sched.start()
-
-@app.route("/")
-def api():
-    return jsonify({
-        "nyt_api": nyt_result
-        })
+categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}

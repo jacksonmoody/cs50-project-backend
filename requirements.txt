@@ -1,4 +1,5 @@
 APScheduler
+Flask-APScheduler
 Flask
 Flask-Session
 gunicorn
