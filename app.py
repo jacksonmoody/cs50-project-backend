@@ -15,7 +15,7 @@ def init_scheduler():
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
-    scheduler.add_job(id='nytapi', func=nytapi, trigger='interval', seconds=5)
+    scheduler.add_job(id='nytapi', func=nytapi, trigger='interval', seconds=30)
 
 categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
 
@@ -25,6 +25,7 @@ def nytapi():
     response = requests.get("https://api.nytimes.com/svc/mostpopular/v2/viewed/7.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD")
     response = response.json()
     nyt_result = response
+    print(nyt_result)
 
 @app.route("/")
 def api():
