@@ -1,12 +1,6 @@
 Flask-APScheduler
 Flask
 Flask-Session
-google-api-core          
-google-api-python-client 
-google-auth             
-google-auth-httplib2  
-google-auth-oauthlib        
-googleapis-common-protos 
 gunicorn
 psycopg2
 requests
