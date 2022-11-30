@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, send_file
 from flask_apscheduler import APScheduler
+import random
 import requests
 import os.path
 import time
@@ -19,11 +20,40 @@ def init_scheduler():
 
 categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
 
+sports = ["Adventure Sports", "Sports"]
+
+art = ["Arts & Leisure", "Arts", "Books", "Fashion & Style", "Fashion", "Home & Garden", "Style", "Sunday Styles", "The Arts"]
+
+technology = ["Automobiles", "Cars", "Circuits", "Flight", "Museums", "Personal Tech", "Wireless Living"]
+
+business = ["Business Day", "Business", "DealBook", "Entrepreneurs", "Financial", "Jobs", "Personal Investing", "Retail", "Small Business", "Sunday Business", "The Business of Green", "Wealth", "Working", "Workplace", "Your Money"]
+
+entertainment = ["Culture", "Dining", "Escapes", "Food", "Global Home", "Home", "Magazine", "Media", "Movies", "T Magazine", "T Style", "Technology", "Television", "The Upshot", "The Weekend", "The Year in Pictures", "Theater", "Travel"]
+
+science = ["Education", "Energy", "Environment", "Science", "The Natural World", "Upshot", "Vacation", "Weather"]
+
+health = ["Health & Fitness", "Health", "Men's Health", "Women's Health"]
+
+politics = ["Metro", "Metropolitan", "National", "Politics", "U.S.", "Washington", "World"]
+
+master_list = [sports, art, technology, business, entertainment, science, health, politics]
+
 nyt_result = []
 
 def nytapi():
     global nyt_result
-    response = requests.get("https://api.nytimes.com/svc/mostpopular/v2/viewed/7.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD")
+
+    num1 = random.randint(0, len(master_list) - 1)
+
+    list1 = master_list[num1]
+
+    num2 = random.randint(0, len(list1) - 1) 
+
+    category = list1[num2]
+
+    
+
+    response = requests.get("https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&fq=news_desk:('" + category + "')")
     response = response.json()
     
     for dictionary in response["results"]:
