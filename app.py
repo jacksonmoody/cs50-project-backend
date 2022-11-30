@@ -45,7 +45,7 @@ def youtubeapi():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'google-credentials.json', SCOPES)
+                'client_secret2.json', SCOPES)
             creds = flow.run_local_server(port=0)
 
         with open('token.json', 'w') as token:
