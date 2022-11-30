@@ -19,14 +19,25 @@ def init_scheduler():
 
 categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
 
-nyt_result = {}
+nyt_result = []
 
 def nytapi():
     global nyt_result
     response = requests.get("https://api.nytimes.com/svc/mostpopular/v2/viewed/7.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD")
     response = response.json()
-    nyt_result = response
-    print(nyt_result)
+    
+    for dictionary in response["results"]:
+        placeholder = {}
+        placeholder["url"] = dictionary["url"]
+        placeholder["title"] = dictionary["title"]
+        placeholder["description"] = dictionary["abstract"]
+
+        try:
+            placeholder["image"] = dictionary["media"][0]["media-metadata"][2]["url"]
+        except:
+            placeholder["image"] = "https://static01.nyt.com/vi-assets/images/share/1200x675_nameplate.png"
+        
+        nyt_result.append(placeholder)
 
 @app.route("/")
 def api():
