@@ -62,7 +62,7 @@ def nytapi():
         placeholder["description"] = dictionary["abstract"]
         placeholder["title"] = dictionary["headline"]["main"]
         try:
-            image = "dictionary["multimedia"][0]["url"]"
+            image = dictionary["multimedia"][0]["url"]
         except: 
             image = "vi-assets/images/share/1200x675_nameplate.png"
 
