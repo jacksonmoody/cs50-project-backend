@@ -51,6 +51,8 @@ def nytapi():
 
     category = list1[num2]
 
+    print(category)
+
     response = requests.get("https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&fq=news_desk:('" + category + "')")
     response = response.json()
 
