@@ -51,28 +51,25 @@ def nytapi():
 
     category = list1[num2]
 
-    print(category)
-
     query = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&fq=news_desk:(\"" + category + "\")"
-    print(query)
 
     response = requests.get(query)
     response = response.json()
 
-    print(response)
-    
-    # for dictionary in response["results"]:
-    #     placeholder = {}
-    #     placeholder["url"] = dictionary["url"]
-    #     placeholder["title"] = dictionary["title"]
-    #     placeholder["description"] = dictionary["abstract"]
+    for dictionary in response["response"]["docs"]:
+        placeholder = {}
+        placeholder["url"] = dictionary["web_url"]
+        placeholder["description"] = dictionary["abstract"]
+        placeholder["title"] = dictionary["headline"]["main"]
+        try:
+            image = "dictionary["multimedia"][0]["url"]"
+        except: 
+            image = "vi-assets/images/share/1200x675_nameplate.png"
 
-    #     try:
-    #         placeholder["image"] = dictionary["media"][0]["media-metadata"][2]["url"]
-    #     except:
-    #         placeholder["image"] = "https://static01.nyt.com/vi-assets/images/share/1200x675_nameplate.png"
-        
-    #     nyt_result.append(placeholder)
+        times = "www.nytimes.com/"
+
+        placeholder["image"] = times + image
+        nyt_result.append(placeholder)
 
 @app.route("/")
 def api():
