@@ -41,6 +41,9 @@ master_list = [sports, art, technology, business, entertainment, science, health
 nyt_result = []
 
 def nytapi():
+
+    print("Updating NYT Database")
+
     global nyt_result
 
     num1 = random.randint(0, len(master_list) - 1)
