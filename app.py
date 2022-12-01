@@ -66,7 +66,7 @@ def nytapi():
         except: 
             image = "vi-assets/images/share/1200x675_nameplate.png"
 
-        times = "www.nytimes.com/"
+        times = "https://www.nytimes.com/"
 
         placeholder["image"] = times + image
         nyt_result.append(placeholder)
