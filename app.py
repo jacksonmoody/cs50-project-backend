@@ -17,12 +17,35 @@ class Config:
 app = Flask(__name__)
 app.config.from_object(Config())
 
+creds = None
+flow = None
+
 @app.before_first_request
-def init_scheduler():
+def init():
+
+    global creds
+    global flow
+
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
     scheduler.add_job(id='nytapi', func=nytapi, trigger='interval', seconds=30)
+
+    if os.path.exists('token.json'):
+        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'secret.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+
+        with open('token.json', 'w') as token:
+            token.write(creds.to_json())
+
+SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"]
 
 categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
 
@@ -79,6 +102,19 @@ def nytapi():
 
         placeholder["image"] = times + image
         nyt_result.append(placeholder)
+
+def youtubeapi():
+    try:
+        service = build('youtube', 'v3', credentials=creds)
+        request = service.videos().list(
+            part="snippet,contentDetails,statistics",
+            chart="mostPopular",
+            regionCode="US"
+        )
+        response = request.execute()
+        print(response)
+    except:
+        print("Request failed")
 
 @app.route("/")
 def api():
