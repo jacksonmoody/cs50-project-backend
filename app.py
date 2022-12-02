@@ -29,6 +29,7 @@ def init():
 
     global creds
     global flow
+    global temporary_token
 
     scheduler = APScheduler()
     scheduler.init_app(app)
@@ -48,7 +49,6 @@ def init():
     temporary_token = requests.post(endpoint, data=data).json()
 
     print(temporary_token)
-
    
 SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"]
 
