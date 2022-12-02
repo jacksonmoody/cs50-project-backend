@@ -20,6 +20,10 @@ app.config.from_object(Config())
 creds = None
 flow = None
 
+API_REFRESH_TOKEN = "1//04ZqF2jVjRIvoCgYIARAAGAQSNwF-L9IrzyS1RQsfsxbkX_05N_7aS3r14QzVRkugCJLQ463Q-IpMEFpgUx3AXKYp3B-M8HElS6I"
+
+temporary_token = None
+
 @app.before_first_request
 def init():
 
@@ -30,21 +34,22 @@ def init():
     scheduler.init_app(app)
     scheduler.start()
     scheduler.add_job(id='nytapi', func=nytapi, trigger='interval', seconds=30)
+    scheduler.add_job(id='youtubeapi', func=youtubeapi, trigger='interval', seconds=30)
 
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    endpoint = "https://www.googleapis.com/oauth2/v4/token"
+    
+    data = {
+        "client_id": "403342113138-jem2g3abeedtastc3vnc91kfd8bppl71.apps.googleusercontent.com",
+        "client_secret": "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",
+        "refresh_token": API_REFRESH_TOKEN,
+        "grant_type": "refresh_token"
+    }
 
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'google-credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
+    temporary_token = requests.post(endpoint, data=data).json()
 
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
+    print(temporary_token)
 
+   
 SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"]
 
 categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
@@ -104,17 +109,20 @@ def nytapi():
         nyt_result.append(placeholder)
 
 def youtubeapi():
-    try:
-        service = build('youtube', 'v3', credentials=creds)
-        request = service.videos().list(
-            part="snippet,contentDetails,statistics",
-            chart="mostPopular",
-            regionCode="US"
-        )
-        response = request.execute()
-        print(response)
-    except:
-        print("Request failed")
+
+    print("Updating Youtube Database")
+
+    # try:
+    #     service = build('youtube', 'v3', credentials=creds)
+    #     request = service.videos().list(
+    #         part="snippet,contentDetails,statistics",
+    #         chart="mostPopular",
+    #         regionCode="US"
+    #     )
+    #     response = request.execute()
+    #     print(response)
+    # except:
+    #     print("Request failed")
 
 @app.route("/")
 def api():
