@@ -122,7 +122,7 @@ def youtubeapi():
 
     print(response)
 
-    youtube_result = response.json()
+    youtube_result = response
 
 @app.route("/")
 def api():
