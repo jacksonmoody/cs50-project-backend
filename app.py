@@ -39,8 +39,8 @@ def init():
     endpoint = "https://www.googleapis.com/oauth2/v4/token"
     
     data = {
-        "client_id": "403342113138-jem2g3abeedtastc3vnc91kfd8bppl71.apps.googleusercontent.com",
-        "client_secret": "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",
+        "client_id": "126533689685-t92uspbhgscsseq3urfipuiibp1c14u0.apps.googleusercontent.com",
+        "client_secret": "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",
         "refresh_token": API_REFRESH_TOKEN,
         "grant_type": "refresh_token"
     }
