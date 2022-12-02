@@ -127,7 +127,7 @@ def youtubeapi(term):
 
     print("Updating Youtube Database")
 
-    endpoint = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&topicId=" + topic + "&type=video"
+    endpoint = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&topicId=" + topic + "&type=video&regionCode=en"
 
     headers = {'Authorization': 'Bearer ' + temporary_token}
 
@@ -135,7 +135,7 @@ def youtubeapi(term):
 
     for dictionary in response["items"]:
         placeholder = {}
-        placeholder["url"] = "https://www,youtube.com/watch?v=" + dictionary["id"]["videoId"]
+        placeholder["url"] = "https://www.youtube.com/watch?v=" + dictionary["id"]["videoId"]
         placeholder["title"] = dictionary["snippet"]["title"]
         placeholder["description"] = dictionary["snippet"]["description"]
         youtube_result.append(placeholder)
