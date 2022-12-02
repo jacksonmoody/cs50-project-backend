@@ -127,7 +127,7 @@ def youtubeapi(term):
 
     print("Updating Youtube Database")
 
-    endpoint = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&topicId=" + topic + "&type=video&relevanceLanguage=en"
+    endpoint = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&topicId=" + topic + "&type=video&relevanceLanguage=en&videoSyndicated=true"
 
     headers = {'Authorization': 'Bearer ' + temporary_token}
 
