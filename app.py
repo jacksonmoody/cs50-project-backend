@@ -135,7 +135,7 @@ def youtubeapi(term):
 
     for dictionary in response["items"]:
         placeholder = {}
-        placeholder["url"] = "https://www.youtube.com/watch?v=" + dictionary["id"]["videoId"]
+        placeholder["url"] = "https://www.youtube.com/embed/" + dictionary["id"]["videoId"]
         placeholder["title"] = dictionary["snippet"]["title"]
         placeholder["description"] = dictionary["snippet"]["description"]
         youtube_result.append(placeholder)
