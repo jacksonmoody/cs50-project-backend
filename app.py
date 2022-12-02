@@ -182,7 +182,7 @@ def wikiapi(term):
     for dict in listdic:
         title = dict['title']
         if not 'Category' in title:
-            article_wiki = {'title': title, 'link': 'https://en.wikipedia.org/wiki/' + title}
+            article_wiki = {'title': title, 'image': 'https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png', 'link': 'https://en.wikipedia.org/wiki/' + title}
             wiki_result.append(article_wiki)
 
 def mainapi():
