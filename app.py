@@ -118,7 +118,7 @@ def youtubeapi():
 
     headers = {'Authorization': 'Bearer ' + temporary_token}
 
-    response = requests.get(endpoint, headers=headers)
+    response = requests.get(endpoint, headers=headers).json()
 
     print(response)
 
