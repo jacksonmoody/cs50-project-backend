@@ -46,9 +46,7 @@ def init():
         "grant_type": "refresh_token"
     }
 
-    temporary_token = requests.post(endpoint, data=data).json()
-
-    print(temporary_token)
+    temporary_token = requests.post(endpoint, data=data).json()["access_token"]
    
 SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"]
 
@@ -73,6 +71,8 @@ politics = ["Metro", "Metropolitan", "National", "Politics", "U.S.", "Washington
 master_list = [sports, art, technology, business, entertainment, science, health, politics]
 
 nyt_result = []
+
+youtube_result = {}
 
 def nytapi():
 
@@ -110,22 +110,23 @@ def nytapi():
 
 def youtubeapi():
 
+    global youtube_result
+
     print("Updating Youtube Database")
 
-    # try:
-    #     service = build('youtube', 'v3', credentials=creds)
-    #     request = service.videos().list(
-    #         part="snippet,contentDetails,statistics",
-    #         chart="mostPopular",
-    #         regionCode="US"
-    #     )
-    #     response = request.execute()
-    #     print(response)
-    # except:
-    #     print("Request failed")
+    endpoint = "https://www.googleapis.com/youtube/v3/search"
+
+    headers = {'Authorization': 'Bearer ' + temporary_token}
+
+    response = requests.post(endpoint, headers=headers)
+
+    print(response)
+
+    youtube_result = response.json()
 
 @app.route("/")
 def api():
     return jsonify({
-        "nyt_api": nyt_result
+        "nyt_api": nyt_result,
+        "youtube_api": youtube_result
         })   
