@@ -55,7 +55,7 @@ nyt_result = []
 
 wiki_result = []
 
-youtube_result = {}
+youtube_result = []
 
 def nytapi(term):
     sports = ["Adventure Sports", "Sports"]
@@ -133,7 +133,12 @@ def youtubeapi(term):
 
     response = requests.get(endpoint, headers=headers).json()
 
-    youtube_result = response
+    for dictionary in response["items"]:
+        placeholder = {}
+        placeholder["url"] = "https://www,youtube.com/watch?v=" + dictionary["id"]["videoId"]
+        placeholder["title"] = dictionary["snippet"]["title"]
+        placeholder["description"] = dictionary["snippet"]["description"]
+        youtube_result.append(placeholder)
 
 def wikiapi(term):
 
@@ -177,7 +182,8 @@ def wikiapi(term):
     for dict in listdic:
         title = dict['title']
         if not 'Category' in title:
-            wiki_result.append(title)
+            article_wiki = {'title': title, 'link': 'https://en.wikipedia.org/wiki/' + title}
+            wiki_result.append(article_wiki)
 
 def mainapi():
     category = random.choice(master_list)
