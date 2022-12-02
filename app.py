@@ -114,6 +114,8 @@ def youtubeapi():
 
     print("Updating Youtube Database")
 
+    print("token: " + temporary_token)
+
     endpoint = "https://www.googleapis.com/youtube/v3/search"
 
     headers = {'Authorization': 'Bearer ' + temporary_token}
