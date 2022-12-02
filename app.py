@@ -181,6 +181,7 @@ def wikiapi(term):
 
 def mainapi():
     category = random.choice(master_list)
+    print("Displaying results from category: " + category)
     nytapi(category)
     youtubeapi(category)
     wikiapi(category)
