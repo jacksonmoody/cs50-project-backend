@@ -36,6 +36,7 @@ def init():
     scheduler.start()
     scheduler.add_job(id='nytapi', func=nytapi, trigger='interval', seconds=30)
     scheduler.add_job(id='youtubeapi', func=youtubeapi, trigger='interval', seconds=30)
+    scheduler.add_job(id='wikiapi', func=wikiapi, trigger='interval', seconds=30)
 
     endpoint = "https://www.googleapis.com/oauth2/v4/token"
     
@@ -113,11 +114,12 @@ def youtubeapi():
 
     response = requests.get(endpoint, headers=headers).json()
 
-    print(response)
-
     youtube_result = response
 
 def wikiapi():
+
+    print("Updating Wiki Database")
+
     session = requests.Session()
 
     sportsW = ["Sports", "Recreation", "Air sports", "American football", "Auto racing", "Baseball terminology", "Basketball", "Horse racing", "Ice hockey", "Olympic Games", "Whitewater sports"]
