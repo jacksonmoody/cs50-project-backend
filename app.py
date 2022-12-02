@@ -50,43 +50,36 @@ def init():
    
 SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"]
 
-categories = {'sports', 'politics', 'business', 'entertainment', 'technology', 'science', 'health'}
-
-sports = ["Adventure Sports", "Sports"]
-
-art = ["Arts & Leisure", "Arts", "Books", "Fashion & Style", "Fashion", "Home & Garden", "Style", "Sunday Styles", "The Arts"]
-
-technology = ["Automobiles", "Cars", "Circuits", "Flight", "Museums", "Personal Tech", "Wireless Living"]
-
-business = ["Business Day", "Business", "DealBook", "Entrepreneurs", "Financial", "Jobs", "Personal Investing", "Retail", "Small Business", "Sunday Business", "The Business of Green", "Wealth", "Working", "Workplace", "Your Money"]
-
-entertainment = ["Culture", "Dining", "Escapes", "Food", "Global Home", "Home", "Magazine", "Media", "Movies", "T Magazine", "T Style", "Technology", "Television", "The Upshot", "The Weekend", "The Year in Pictures", "Theater", "Travel"]
-
-science = ["Education", "Energy", "Environment", "Science", "The Natural World", "Upshot", "Vacation", "Weather"]
-
-health = ["Health & Fitness", "Health", "Men's Health", "Women's Health"]
-
-politics = ["Metro", "Metropolitan", "National", "Politics", "U.S.", "Washington", "World"]
-
-master_list = [sports, art, technology, business, entertainment, science, health, politics]
-
 nyt_result = []
+
+wiki_result = []
 
 youtube_result = {}
 
 def nytapi():
+    sports = ["Adventure Sports", "Sports"]
+
+    art = ["Arts & Leisure", "Arts", "Books", "Fashion & Style", "Fashion", "Home & Garden", "Style", "Sunday Styles", "The Arts"]
+
+    technology = ["Automobiles", "Cars", "Circuits", "Flight", "Museums", "Personal Tech", "Wireless Living"]
+
+    business = ["Business Day", "Business", "DealBook", "Entrepreneurs", "Financial", "Jobs", "Personal Investing", "Retail", "Small Business", "Sunday Business", "The Business of Green", "Wealth", "Working", "Workplace", "Your Money"]
+
+    entertainment = ["Culture", "Dining", "Escapes", "Food", "Global Home", "Home", "Magazine", "Media", "Movies", "T Magazine", "T Style", "Technology", "Television", "The Upshot", "The Weekend", "The Year in Pictures", "Theater", "Travel"]
+
+    science = ["Education", "Energy", "Environment", "Science", "The Natural World", "Upshot", "Vacation", "Weather"]
+
+    health = ["Health & Fitness", "Health", "Men's Health", "Women's Health"]
+
+    politics = ["Metro", "Metropolitan", "National", "Politics", "U.S.", "Washington", "World"]
+
+    master_list = [sports, art, technology, business, entertainment, science, health, politics]
 
     print("Updating NYT Database")
 
-    global nyt_result
+    global nyt_result 
 
-    num1 = random.randint(0, len(master_list) - 1)
-
-    list1 = master_list[num1]
-
-    num2 = random.randint(0, len(list1) - 1) 
-
-    category = list1[num2]
+    category = random.choice(random.choice(master_list))
 
     query = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&fq=news_desk:(\"" + category + "\")"
 
@@ -124,9 +117,50 @@ def youtubeapi():
 
     youtube_result = response
 
+def wikiapi():
+    session = requests.Session()
+
+    sportsW = ["Sports", "Recreation", "Air sports", "American football", "Auto racing", "Baseball terminology", "Basketball", "Horse racing", "Ice hockey", "Olympic Games", "Whitewater sports"]
+
+    politicsW = ["Lists of politicians", "Politics", "Political activism", "Clothing in politics", "Political communication", "Comparative politics", "Cultural politics", "Election campaigning", "Political philosophy", "Political theories"]
+
+    businessW = ["Chief executive officers", "Billionaires", "Real estate", "Finance", "Business", "Paradoxes in economics", "Money", "Industries (economics)", "Financial markets", "Investment", "Business economics", "Business ethics", "Business economics", "Business terms", "Sports business"]
+
+    entertainmentW = ["Entertainment", "Lists of games", "Toys", "Film", "Internet", "Television", "Mass media franchises", "Humour", "Entertainment occupations", "Amusement parks", "Gaming", "Film characters", "History of film", "Cinemas and movie theaters", "Celebrity reality television series", "Comedy", "Unofficial observances", "Satire"]
+
+    technologyW = ["Explorers", "Sports inventors and innovators", "Inventors", "Artificial intelligence", "Computer architecture", "Embedded systems", "Semiconductors", "Telecommunications", "Civil engineering", "Aerospace engineering", "History of the automobile", "Cycling", "Public transport", "Road transport"]
+
+    scienceW = ["Climate change", "Nature conservation", "Pollution", "Biology", "Zoology", "Neuroscience", "Humans", "Plants", "Space", "Astronomy", "Chemistry", "Climate", "Physics-related lists", "Space", "Energy", "Lists of things named after scientists"]
+
+    healthW = ["Nutrition", "Hygiene", "Positive psychology", "Public health", "Medicine", "Dentistry", "Veterinary medicine"]
+
+    artsW = ["Classical studies", "Critical theory", "Culture", "Humanities", "Folklore", "Performing arts", "Visual arts", "Economics of the arts and literature", "Arts occupations", "Fiction", "Fiction anthologies", "Clowning", "Storytelling", "Variety shows", "Theatre"]
+
+    masterlistW = [sportsW, politicsW, businessW, entertainmentW, technologyW, scienceW, healthW, artsW]
+    var = random.choice(random.choice(masterlistW))
+
+    url = "https://en.wikipedia.org/w/api.php"
+    params = {
+        "action": "query",
+        "format": "json",
+        "list": "categorymembers",
+        "cmtitle": "Category:" + var,
+        "cmlimit": "500"
+    }
+
+    response = session.get(url=url, params=params)
+    data = response.json()
+    listdic = data['query']['categorymembers']
+    global wiki_result
+    for dict in listdic:
+        title = dict['title']
+        if not 'Category' in title:
+            wiki_result.append(title)
+
 @app.route("/")
 def api():
     return jsonify({
         "nyt_api": nyt_result,
-        "youtube_api": youtube_result
+        "youtube_api": youtube_result, 
+        'wiki_api': wiki_result
         })   
