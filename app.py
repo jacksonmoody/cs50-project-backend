@@ -167,8 +167,10 @@ def youtubeapi(term):
                 continue 
 
         youtube_result[term] = videos
-    except:
-        print("YouTube API Error (Quota Exceeded)")
+    
+    except Exception as e:
+        print("YouTube API Error:")
+        print(e)
 
 def wikiapi(term):
     
