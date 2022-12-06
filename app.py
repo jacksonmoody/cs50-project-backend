@@ -15,9 +15,9 @@ app.config.from_object(Config())
 creds = None
 flow = None
 
-API_REFRESH_TOKEN = "1//04SLW0L4HyxdmCgYIARAAGAQSNwF-L9IrKcLkguwJVNvyzQUua2CwLoC4lCzjZab07E4cbLeL-z6nY6Fh75Zca9hpjejYEp_r4Ug"
-CLIENT_ID = "404870621114-vvpk90q4nsfnc8ai8hcop6jv2ptgtbmv.apps.googleusercontent.com"
-CLIENT_SECRET = "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"
+API_REFRESH_TOKEN = "1//04hBvUkI7CYKACgYIARAAGAQSNwF-L9IrtDlMDQaDoGZdLJuc15VofNX-QPJZUIE4IdJBa9wajlWplfQIZXArQ9t6GEu3Qx-3mO0"
+CLIENT_ID = "470058450833-t1180pp25vo98u5vmv4osb8dvemgokbv.apps.googleusercontent.com"
+CLIENT_SECRET = "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"
 
 temporary_token = None
 
