@@ -78,7 +78,7 @@ def nytapi(term):
     pagenumbers = min(hits // 10, 100)
     page = random.randint(1, pagenumbers)
 
-    articlesquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&begin_date=20160101&page=" + page + "&fq=news_desk:(\"" + category + "\")"
+    articlesquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&begin_date=20160101&page=" + str(page) + "&fq=news_desk:(\"" + category + "\")"
     response = requests.get(articlesquery)
     response = response.json()
 
