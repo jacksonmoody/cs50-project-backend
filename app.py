@@ -126,8 +126,8 @@ def youtubeapi(term):
     for dictionary in response["items"]:
         placeholder = {}
         placeholder["url"] = "https://www.youtube.com/embed/" + dictionary["id"]["videoId"]
-        placeholder["title"] = dictionary["snippet"]["title"]
-        placeholder["description"] = dictionary["snippet"]["description"]
+        placeholder["title"] = decode(dictionary["snippet"]["title"])
+        placeholder["description"] = decode(dictionary["snippet"]["description"])
 
         videos[term].append(placeholder)
 
@@ -179,11 +179,20 @@ def wikiapi(term):
     
     print("Updating Wiki Database")
 
+def decode(htmlTitle):
+    htmlTitle = htmlTitle.replace("/&lt;/g", "<")	 
+    htmlTitle = htmlTitle.replace("/&gt;/g", ">")     
+    htmlTitle = htmlTitle.replace("/&quot;/g", "\"")
+    htmlTitle = htmlTitle.replace("/&#39;/g", "\'")   
+    htmlTitle = htmlTitle.replace("/&amp;/g", "&")
+    return htmlTitle
+
 def mainapi():    
     for category in master_list:
         nytapi(category)
         youtubeapi(category)
         wikiapi(category)
+    print("Finished Updating")
     
 @app.route("/")
 def api():
