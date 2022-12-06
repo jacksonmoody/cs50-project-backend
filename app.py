@@ -15,9 +15,9 @@ app.config.from_object(Config())
 creds = None
 flow = None
 
-API_REFRESH_TOKEN = "1//04hBvUkI7CYKACgYIARAAGAQSNwF-L9IrtDlMDQaDoGZdLJuc15VofNX-QPJZUIE4IdJBa9wajlWplfQIZXArQ9t6GEu3Qx-3mO0"
-CLIENT_ID = "470058450833-t1180pp25vo98u5vmv4osb8dvemgokbv.apps.googleusercontent.com"
-CLIENT_SECRET = "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"
+API_REFRESH_TOKEN = "1//04IffzIy_jneJCgYIARAAGAQSNwF-L9Ir0OmFiaeuf1Cdvzy3sbRNm234B-bGn2DnHAR8RygDFW93bJfbQZpT_KS7tsIC7ZCd_sI"
+CLIENT_ID = "759042717772-6dto2nrv2i25g0dmjj5bl82cbehl69dq.apps.googleusercontent.com"
+CLIENT_SECRET = "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"
 
 temporary_token = None
 
@@ -31,7 +31,10 @@ def init():
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
-    scheduler.add_job(id='mainapi', func=mainapi, trigger='interval', minutes=2.5)
+    scheduler.add_job(id='mainapi', func=mainapi, trigger='interval', minutes=10)
+
+    for job in scheduler.get_jobs():
+        job.modify(next_run_time=datetime.now())
 
     endpoint = "https://www.googleapis.com/oauth2/v4/token"
     
@@ -87,7 +90,11 @@ def nytapi(term):
     for dictionary in response["response"]["docs"]:
         placeholder = {}
         placeholder["url"] = dictionary["web_url"]
-        placeholder["description"] = html.escape(dictionary["abstract"])
+        if "http" not in dictionary["abstract"]:
+            placeholder["description"] = dictionary["abstract"]
+        else:
+            continue
+
         placeholder["title"] = dictionary["headline"]["main"]
         try:
             image = dictionary["multimedia"][0]["url"]
@@ -129,7 +136,10 @@ def youtubeapi(term):
             placeholder = {}
             placeholder["url"] = "https://www.youtube.com/embed/" + dictionary["id"]["videoId"]
             placeholder["title"] = decode(dictionary["snippet"]["title"])
-            placeholder["description"] = decode(dictionary["snippet"]["description"])
+            if "http" not in dictionary["snippet"]["description"]:
+                placeholder["description"] = decode(dictionary["snippet"]["description"])
+            else:
+                continue
 
             videos[term].append(placeholder)
 
