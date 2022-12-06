@@ -2,14 +2,7 @@ from flask import Flask, jsonify, request, send_file
 from flask_apscheduler import APScheduler
 import random
 import requests
-import os.path
-import time
-
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+import datetime
 
 class Config:
     SCHEDULER_API_ENABLED = True
@@ -34,7 +27,10 @@ def init():
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
-    scheduler.add_job(id='mainapi', func=mainapi, trigger='interval', seconds=30)
+    scheduler.add_job(id='mainapi', func=mainapi, trigger='interval', minutes=5)
+
+    for job in scheduler.get_jobs():
+        job.modify(next_run_time=datetime.now())
 
     endpoint = "https://www.googleapis.com/oauth2/v4/token"
     
