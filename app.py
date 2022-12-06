@@ -31,7 +31,7 @@ def init():
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
-    scheduler.add_job(id='mainapi', func=mainapi, trigger='interval', minutes=2)
+    scheduler.add_job(id='mainapi', func=mainapi, trigger='interval', minutes=5)
 
     endpoint = "https://www.googleapis.com/oauth2/v4/token"
     
