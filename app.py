@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, send_file
 from flask_apscheduler import APScheduler
 from datetime import datetime
+import time
 import random
 import requests
 
@@ -68,7 +69,7 @@ def nytapi(term):
     articles[term] = []
     category = random.choice(nyt_dict[term])
 
-    hitsquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&begin_date=20160101&fq=news_desk:(\"Sports\")"
+    hitsquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&begin_date=20160101&fq=news_desk:(\"" + category + "\")"
 
     response = requests.get(hitsquery)
     print(response)
@@ -78,7 +79,7 @@ def nytapi(term):
         pagenumbers = min(hits // 10, 100)
         page = random.randint(1, pagenumbers)
 
-    articlesquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&begin_date=20160101&page=" + str(page) + "&fq=news_desk:(\"Sports\")"
+    articlesquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&begin_date=20160101&page=" + str(page) + "&fq=news_desk:(\"" + category + "\")"
     response = requests.get(articlesquery)
     response = response.json()
 
@@ -99,6 +100,7 @@ def nytapi(term):
         nyt_result[term] = articles[term]
     
     print("Updating NYT Database")
+    time.sleep(1)
 
 
 def youtubeapi(term):
