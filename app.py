@@ -73,7 +73,8 @@ def nytapi(term):
     hitsquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&begin_date=20160101&fq=news_desk:(\"" + category + "\")"
 
     response = requests.get(hitsquery)
-    if response != None:
+    print(response)
+    if response != None or response != {}:
         response = response.json()
         hits = response['response']['meta']['hits']
         pagenumbers = min(hits // 10, 100)
