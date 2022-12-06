@@ -72,7 +72,7 @@ def nytapi(term):
     articles[term] = []
     category = random.choice(nyt_dict[term])
 
-    hitsquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&begin_date=20160101&fq=news_desk:(\"" + category + "\")"
+    hitsquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=tQIaepDN84Rl2sfsRyuWGA33YaE6tmQA&begin_date=20160101&fq=news_desk:(\"" + category + "\")"
 
     response = requests.get(hitsquery)
     if response != None or response != {}:
@@ -81,7 +81,7 @@ def nytapi(term):
         pagenumbers = min(hits // 10, 100)
         page = random.randint(1, pagenumbers)
 
-    articlesquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&begin_date=20160101&page=" + str(page) + "&fq=news_desk:(\"" + category + "\")"
+    articlesquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=tQIaepDN84Rl2sfsRyuWGA33YaE6tmQA&begin_date=20160101&page=" + str(page) + "&fq=news_desk:(\"" + category + "\")"
     response = requests.get(articlesquery)
     response = response.json()
 
