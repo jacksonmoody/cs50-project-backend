@@ -21,6 +21,7 @@ temporary_token = None
 class Config:
     SCHEDULER_API_ENABLED = True
 
+
 # Define the Flask app
 app = Flask(__name__)
 app.config.from_object(Config())
@@ -31,10 +32,11 @@ DetectorFactory.seed = 0
 # Define the categories of information to be retrieved by the APIs
 master_list = ['sports', 'technology', 'entertainment', 'science', 'politics']
 
-# Define dictionaries to store the results from each 
+# Define dictionaries to store the results from each
 nyt_result = {}
 youtube_result = {}
 wiki_result = {}
+
 
 # The following code is executed when the app is first initiated, before the first run of the scheduler
 @app.before_first_request
@@ -54,7 +56,7 @@ def init():
 
     # Get a temporary token for the YouTube API using the client ID, client secret, and refresh token defined earlier
     endpoint = "https://www.googleapis.com/oauth2/v4/token"
-    
+
     data = {
         "client_id": CLIENT_ID,
         "client_secret": CLIENT_SECRET,
@@ -64,12 +66,13 @@ def init():
 
     temporary_token = requests.post(endpoint, data=data).json()["access_token"]
 
+
 def nytapi(term):
     # Define the categories and subcategories for the NYT API
     sports = ["Sports"]
     technology = ["Automobiles", "Technology"]
-    entertainment = ["Arts", "Books", "Style", "Culture", "Dining", "Food", "Magazine", "Movies", "T Magazine", "Technology", "The Upshot","Travel"]
-    science = ["Science","Upshot"]
+    entertainment = ["Arts", "Books", "Style", "Culture", "Dining", "Food", "Magazine", "Movies", "T Magazine", "Technology", "The Upshot", "Travel"]
+    science = ["Science", "Upshot"]
     politics = ["Metro", "Metropolitan", "National", "Politics", "U.S.", "Washington", "World"]
     nyt_dict = {'sports': sports, 'technology': technology, 'entertainment': entertainment, 'science': science, 'politics': politics}
 
@@ -86,11 +89,11 @@ def nytapi(term):
     hits = response['response']['meta']['hits']
     pagenumbers = min(hits // 10, 100)
     page = random.randint(1, pagenumbers)
-    
+
     # We sleep for 6 seconds to avoid hitting the NYT API's rate limit
     time.sleep(6)
 
-    # We now query into NYT using the random page number we generated and the category we picked. 
+    # We now query into NYT using the random page number we generated and the category we picked.
     articlesquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + NYT_KEY + "&begin_date=20160101&page=" + str(page) + "&fq=news_desk:(\"" + category + "\")"
     response = requests.get(articlesquery)
     response = response.json()
@@ -110,16 +113,16 @@ def nytapi(term):
             image = dictionary["multimedia"][0]["url"]
         except:
             image = "vi-assets/images/share/1200x675_nameplate.png"
-        
+
         times = "https://www.nytimes.com/"
 
         placeholder["image"] = times + image
 
         # We append the placeholder dictionary to our list and then add the completed list to the result dictionary for that term.
         articles.append(placeholder)
-    
+
     nyt_result[term] = articles
-    
+
     print("Updating NYT Database")
 
 
@@ -135,7 +138,7 @@ def youtubeapi(term):
     # We'll use videos as a list to store all of our videos (each a dictionary) to add to our youtube result dictionary.
     videos = []
     global youtube_result
-    
+
     # With the specific category we are given, we get a random subcategory.
     category = random.choice(youtube_dict[term])
 
@@ -162,23 +165,24 @@ def youtubeapi(term):
                 continue
 
             try:
-                if (detect(placeholder["title"])== 'en') and (detect(placeholder["description"]) == 'en'):
+                if (detect(placeholder["title"]) == 'en') and (detect(placeholder["description"]) == 'en'):
                     videos.append(placeholder)
-                else: 
-                    continue 
+                else:
+                    continue
             except:
                 # Error with language identification -- Do not use this video
                 continue
 
         youtube_result[term] = videos
-    
+
     except Exception as e:
         print("YouTube API Error with term: " + term)
         print(e)
         print(youtube_result[term])
 
+
 def wikiapi(term):
-    
+
     # We'll use articles as a list to store all of our articles (each a dictionary) to add to our Wikipedia result dictionary.
     articles = []
     global wiki_result
@@ -193,7 +197,7 @@ def wikiapi(term):
 
     category = random.choice(wiki_dict[term])
 
-    # We set our API url and our parameters to get articles from a specific category and then request the API with our parameters. 
+    # We set our API url and our parameters to get articles from a specific category and then request the API with our parameters.
     url = "https://en.wikipedia.org/w/api.php"
 
     params = {
@@ -214,39 +218,47 @@ def wikiapi(term):
             placeholder = {'title': title, 'image': 'https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png', 'link': formatWikiLink('https://en.wikipedia.org/wiki/' + title)}
 
             articles.append(placeholder)
-    
+
     wiki_result[term] = articles
-    
+
     print("Updating Wiki Database")
+
+
 
 # Helper function to replace problematic characters in HTML with their ASCII values (for YouTube)
 def decode(htmlTitle):
-    htmlTitle = htmlTitle.replace("&lt;", "<")	 
-    htmlTitle = htmlTitle.replace("&gt;", ">")     
+    htmlTitle = htmlTitle.replace("&lt;", "<")
+    htmlTitle = htmlTitle.replace("&gt;", ">")
     htmlTitle = htmlTitle.replace("&quot;", "\"")
-    htmlTitle = htmlTitle.replace("&#39;", "\'")   
+    htmlTitle = htmlTitle.replace("&#39;", "\'")
     htmlTitle = htmlTitle.replace("&amp;", "&")
     return htmlTitle
+
+
 
 # Helper function to format Wikipedia links correctly
 def formatWikiLink(link):
     link = link.replace(" ", "_")
     return link
 
+
+
 # Function to add new information for each category from each API to the results (this is the main function that gets all of our info and is scheduled)
-def mainapi():    
+def mainapi():
     for category in master_list:
         nytapi(category)
         youtubeapi(category)
         wikiapi(category)
         time.sleep(6)
     print("Finished Updating")
-    
+
+
+
 # API Functionality: Return JSON object with results from The New York Times, YouTube, and Wikipedia at default route
 @app.route("/")
 def api():
     return jsonify({
         "nyt_api": nyt_result,
-        "youtube_api": youtube_result, 
+        "youtube_api": youtube_result,
         'wiki_api': wiki_result
-    })   
+    })
