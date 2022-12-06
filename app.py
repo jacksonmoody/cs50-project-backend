@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request, send_file
 from flask_apscheduler import APScheduler
+from datetime import datetime
 import random
 import requests
-import datetime
 
 class Config:
     SCHEDULER_API_ENABLED = True
