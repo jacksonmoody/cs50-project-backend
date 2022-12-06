@@ -188,6 +188,7 @@ def mainapi():
         nytapi(category)
         youtubeapi(category)
         wikiapi(category)
+        time.sleep(6)
     print("Finished Updating")
     
 @app.route("/")
