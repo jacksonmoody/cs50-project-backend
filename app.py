@@ -126,6 +126,7 @@ def youtubeapi(term):
     response = requests.get(endpoint, headers=headers).json()
 
     try:
+        print("Updating YouTube Database")
         for dictionary in response["items"]:
             placeholder = {}
             placeholder["url"] = "https://www.youtube.com/embed/" + dictionary["id"]["videoId"]
@@ -135,7 +136,6 @@ def youtubeapi(term):
             videos[term].append(placeholder)
 
             youtube_result[term] = videos[term]
-            print("Updating YouTube Database")
     except:
         print("YouTube API Error (Quota Exceeded)")
 
