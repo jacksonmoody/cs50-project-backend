@@ -60,15 +60,18 @@ def nytapi(term):
     hitsquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=tQIaepDN84Rl2sfsRyuWGA33YaE6tmQA&begin_date=20160101&fq=news_desk:(\"" + category + "\")"
 
     response = requests.get(hitsquery)
-    if response != None or response != {}:
-        response = response.json()
-        hits = response['response']['meta']['hits']
-        pagenumbers = min(hits // 10, 100)
-        page = random.randint(1, pagenumbers)
+    response = response.json()
+    hits = response['response']['meta']['hits']
+    pagenumbers = min(hits // 10, 100)
+    page = random.randint(1, pagenumbers)
+    
+    time.sleep(6)
 
     articlesquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=tQIaepDN84Rl2sfsRyuWGA33YaE6tmQA&begin_date=20160101&page=" + str(page) + "&fq=news_desk:(\"" + category + "\")"
     response = requests.get(articlesquery)
     response = response.json()
+
+    time.sleep(6)
 
     for dictionary in response["response"]["docs"]:
         placeholder = {}
@@ -87,7 +90,6 @@ def nytapi(term):
         nyt_result[term] = articles[term]
     
     print("Updating NYT Database")
-    time.sleep(10)
 
 
 def youtubeapi(term):
