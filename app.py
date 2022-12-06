@@ -14,7 +14,9 @@ app.config.from_object(Config())
 creds = None
 flow = None
 
-API_REFRESH_TOKEN = "1//04YmRU7hieeP6CgYIARAAGAQSNwF-L9IrELl9AYMaRUsJpQUppUYF_GUTTK-3E116sW9lldGLthggNzCHFB13YmSAvxNciVkdReE"
+API_REFRESH_TOKEN = "1//04SLW0L4HyxdmCgYIARAAGAQSNwF-L9IrKcLkguwJVNvyzQUua2CwLoC4lCzjZab07E4cbLeL-z6nY6Fh75Zca9hpjejYEp_r4Ug"
+CLIENT_ID = "404870621114-vvpk90q4nsfnc8ai8hcop6jv2ptgtbmv.apps.googleusercontent.com"
+CLIENT_SECRET = "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"
 
 temporary_token = None
 
@@ -28,7 +30,7 @@ def init():
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
-    scheduler.add_job(id='mainapi', func=mainapi, trigger='interval', minutes=5)
+    scheduler.add_job(id='mainapi', func=mainapi, trigger='interval', minutes=10)
 
     for job in scheduler.get_jobs():
         job.modify(next_run_time=datetime.now())
@@ -36,8 +38,8 @@ def init():
     endpoint = "https://www.googleapis.com/oauth2/v4/token"
     
     data = {
-        "client_id": "403342113138-jem2g3abeedtastc3vnc91kfd8bppl71.apps.googleusercontent.com",
-        "client_secret": "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",
+        "client_id": CLIENT_ID,
+        "client_secret": CLIENT_SECRET,
         "refresh_token": API_REFRESH_TOKEN,
         "grant_type": "refresh_token"
     }
