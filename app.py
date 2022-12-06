@@ -133,7 +133,7 @@ def youtubeapi(term):
 
         youtube_result[term] = videos[term]
 
-    print("Updating NYT Database")
+    print("Updating YouTube Database")
 
 def wikiapi(term):
     
