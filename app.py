@@ -100,7 +100,7 @@ def nytapi(term):
         nyt_result[term] = articles[term]
     
     print("Updating NYT Database")
-    time.sleep(1)
+    time.sleep(5)
 
 
 def youtubeapi(term):
