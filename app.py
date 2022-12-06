@@ -21,28 +21,16 @@ CLIENT_SECRET = "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"
 
 temporary_token = None
 
-@app.before_first_request
-def init():
-
-    global creds
-    global flow
-    global temporary_token
-
-    scheduler = APScheduler()
-    scheduler.init_app(app)
-    scheduler.start()
-    scheduler.add_job(id='mainapi', func=mainapi, trigger='interval', minutes=2)
-
-    endpoint = "https://www.googleapis.com/oauth2/v4/token"
+endpoint = "https://www.googleapis.com/oauth2/v4/token"
     
-    data = {
-        "client_id": CLIENT_ID,
-        "client_secret": CLIENT_SECRET,
-        "refresh_token": API_REFRESH_TOKEN,
-        "grant_type": "refresh_token"
-    }
+data = {
+    "client_id": CLIENT_ID,
+    "client_secret": CLIENT_SECRET,
+    "refresh_token": API_REFRESH_TOKEN,
+    "grant_type": "refresh_token"
+}
 
-    temporary_token = requests.post(endpoint, data=data).json()["access_token"]
+temporary_token = requests.post(endpoint, data=data).json()["access_token"]
    
 SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"]
 
@@ -207,3 +195,5 @@ def api():
         "youtube_api": youtube_result, 
         'wiki_api': wiki_result
     })   
+
+mainapi()
