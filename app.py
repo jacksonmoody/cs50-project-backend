@@ -169,7 +169,7 @@ def youtubeapi(term):
         youtube_result[term] = videos
     
     except Exception as e:
-        print("YouTube API Error:")
+        print("YouTube API Error with term: " + term)
         print(e)
         print(youtube_result[term])
 
