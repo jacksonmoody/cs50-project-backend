@@ -184,11 +184,11 @@ def wikiapi(term):
     print("Updating Wiki Database")
 
 def decode(htmlTitle):
-    htmlTitle = htmlTitle.replace("/&lt;/g", "<")	 
-    htmlTitle = htmlTitle.replace("/&gt;/g", ">")     
-    htmlTitle = htmlTitle.replace("/&quot;/g", "\"")
-    htmlTitle = htmlTitle.replace("/&#39;/g", "\'")   
-    htmlTitle = htmlTitle.replace("/&amp;/g", "&")
+    htmlTitle = htmlTitle.replace("&lt;", "<")	 
+    htmlTitle = htmlTitle.replace("&gt;", ">")     
+    htmlTitle = htmlTitle.replace("&quot;", "\"")
+    htmlTitle = htmlTitle.replace("&#39;", "\'")   
+    htmlTitle = htmlTitle.replace("&amp;", "&")
     return htmlTitle
 
 def mainapi():    
