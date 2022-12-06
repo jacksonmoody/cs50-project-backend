@@ -16,9 +16,9 @@ app.config.from_object(Config())
 creds = None
 flow = None
 
-API_REFRESH_TOKEN = "1//04IffzIy_jneJCgYIARAAGAQSNwF-L9Ir0OmFiaeuf1Cdvzy3sbRNm234B-bGn2DnHAR8RygDFW93bJfbQZpT_KS7tsIC7ZCd_sI"
-CLIENT_ID = "759042717772-6dto2nrv2i25g0dmjj5bl82cbehl69dq.apps.googleusercontent.com"
-CLIENT_SECRET = "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"
+API_REFRESH_TOKEN = "1//04YmRU7hieeP6CgYIARAAGAQSNwF-L9IrELl9AYMaRUsJpQUppUYF_GUTTK-3E116sW9lldGLthggNzCHFB13YmSAvxNciVkdReE"
+CLIENT_ID = "403342113138-jem2g3abeedtastc3vnc91kfd8bppl71.apps.googleusercontent.com"
+CLIENT_SECRET = "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"
 
 temporary_token = None
 
@@ -141,7 +141,7 @@ def youtubeapi(term):
                 placeholder["description"] = decode(dictionary["snippet"]["description"])
             else:
                 continue
-            
+
             if (detect(placeholder["title"])== 'en') and (detect(placeholder["description"]) == 'en'):
                 videos[term].append(placeholder)
                 youtube_result[term] = videos[term]
