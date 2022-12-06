@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, send_file
 from flask_apscheduler import APScheduler
 from datetime import datetime
+from langdetect import detect, DetectorFactory
 import time
 import random
 import requests
@@ -20,6 +21,8 @@ CLIENT_ID = "759042717772-6dto2nrv2i25g0dmjj5bl82cbehl69dq.apps.googleuserconten
 CLIENT_SECRET = "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"
 
 temporary_token = None
+
+DetectorFactory.seed = 0
 
 @app.before_first_request
 def init():
@@ -138,10 +141,12 @@ def youtubeapi(term):
                 placeholder["description"] = decode(dictionary["snippet"]["description"])
             else:
                 continue
-
-            videos[term].append(placeholder)
-
-            youtube_result[term] = videos[term]
+            
+            if (detect(placeholder["title"])== 'en') and (detect(placeholder["description"]) == 'en'):
+                videos[term].append(placeholder)
+                youtube_result[term] = videos[term]
+            else: 
+                continue
     except:
         print("YouTube API Error (Quota Exceeded)")
 
