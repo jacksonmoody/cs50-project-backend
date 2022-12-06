@@ -72,7 +72,6 @@ def nytapi(term):
     hitsquery = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=FgKjzYiiamFAfUJMbpPnqkn7u3ManknD&begin_date=20160101&fq=news_desk:(\"" + category + "\")"
 
     response = requests.get(hitsquery)
-    print(response)
     if response != None or response != {}:
         response = response.json()
         hits = response['response']['meta']['hits']
@@ -134,6 +133,8 @@ def youtubeapi(term):
 
         youtube_result[term] = videos[term]
 
+    print("Updating NYT Database")
+
 def wikiapi(term):
     
     articles = {}
@@ -175,6 +176,8 @@ def wikiapi(term):
             articles[term].append(placeholder)
 
             wiki_result[term] = articles[term]
+    
+    print("Updating Wiki Database")
 
 def mainapi():    
     for category in master_list:
