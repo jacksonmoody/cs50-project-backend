@@ -140,7 +140,7 @@ def youtubeapi(term):
     category = random.choice(youtube_dict[term])
 
     # Then, we query the YouTube API for videos in that subcategory --> we ensure that we also get videos in English that are of medium length, from the United States, and are able to be played outside youtube.com.
-    endpoint = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=100&topicId=" + category + "&type=video&relevanceLanguage=en&videoSyndicated=true&videoDuration=medium&regionCode=US"
+    endpoint = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=100&topicId=" + category + "&type=video&relevanceLanguage=en&videoSyndicated=true&videoEmbeddable=true&videoDuration=medium&regionCode=US"
 
     # Set the bearer token in the header of the API request
     headers = {'Authorization': 'Bearer ' + temporary_token}
@@ -171,6 +171,7 @@ def youtubeapi(term):
     except Exception as e:
         print("YouTube API Error:")
         print(e)
+        print(youtube_result[term])
 
 def wikiapi(term):
     
