@@ -173,20 +173,15 @@ def wikiapi(term):
             wiki_result[term] = articles[term]
 
 def mainapi():    
-    nytapi()
-    youtubeapi()
-    wikiapi()
-
-@app.route("/")
-def api():
     for category in master_list:
         nytapi(category)
         youtubeapi(category)
         wikiapi(category)
     
+@app.route("/")
+def api():
     return jsonify({
-        "category": category,
         "nyt_api": nyt_result,
         "youtube_api": youtube_result, 
         'wiki_api': wiki_result
-        })   
+    })   
