@@ -4,6 +4,7 @@ from datetime import datetime
 import time
 import random
 import requests
+import html
 
 class Config:
     SCHEDULER_API_ENABLED = True
@@ -87,7 +88,7 @@ def nytapi(term):
     for dictionary in response["response"]["docs"]:
         placeholder = {}
         placeholder["url"] = dictionary["web_url"]
-        placeholder["description"] = dictionary["abstract"]
+        placeholder["description"] = html.escape(dictionary["abstract"])
         placeholder["title"] = dictionary["headline"]["main"]
         try:
             image = dictionary["multimedia"][0]["url"]
@@ -175,7 +176,7 @@ def wikiapi(term):
     for dict in listdic:
         title = dict['title']
         if not 'Category' in title:
-            placeholder = {'title': title, 'image': 'https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png', 'link': 'https://en.wikipedia.org/wiki/' + title}
+            placeholder = {'title': title, 'image': 'https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png', 'link': formatWikiLink('https://en.wikipedia.org/wiki/' + title)}
         
             articles[term].append(placeholder)
 
@@ -190,6 +191,10 @@ def decode(htmlTitle):
     htmlTitle = htmlTitle.replace("&#39;", "\'")   
     htmlTitle = htmlTitle.replace("&amp;", "&")
     return htmlTitle
+
+def formatWikiLink(link):
+    link = link.replace(" ", "_")
+    return link
 
 def mainapi():    
     for category in master_list:
