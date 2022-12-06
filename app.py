@@ -161,10 +161,14 @@ def youtubeapi(term):
             else:
                 continue
 
-            if (detect(placeholder["title"])== 'en') and (detect(placeholder["description"]) == 'en'):
-                videos.append(placeholder)
-            else: 
-                continue 
+            try:
+                if (detect(placeholder["title"])== 'en') and (detect(placeholder["description"]) == 'en'):
+                    videos.append(placeholder)
+                else: 
+                    continue 
+            except:
+                # Error with language identification -- Do not use this video
+                continue
 
         youtube_result[term] = videos
     
