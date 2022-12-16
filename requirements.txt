@@ -1,0 +1,8 @@
+Flask-APScheduler
+Flask
+Flask-Session
+gunicorn
+psycopg2
+requests
+datetime
+langdetect
