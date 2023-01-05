@@ -8,11 +8,10 @@ import random
 import requests
 
 # Credentials for the YouTube and NYT APIs. Replace these as appropriate (and as defined in README.md)
-API_REFRESH_TOKEN = "1//04msvb6_5J6QdCgYIARAAGAQSNwF-L9IrXYwN23jABbvRc-3FxhYMkZ0QlTkfU4ChFlb4rHBurwb9idzXA9r3Q9I7IX5fjBUx7U8"
-CLIENT_ID = "126533689685-t92uspbhgscsseq3urfipuiibp1c14u0.apps.googleusercontent.com"
-CLIENT_SECRET = "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"
-
-NYT_KEY = "tQIaepDN84Rl2sfsRyuWGA33YaE6tmQA"
+API_REFRESH_TOKEN = ""
+CLIENT_ID = ""
+CLIENT_SECRET = ""
+NYT_KEY = ""
 
 # Hold temporary token for YouTube API
 temporary_token = None
